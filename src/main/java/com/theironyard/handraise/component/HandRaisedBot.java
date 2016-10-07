@@ -41,6 +41,7 @@ public class HandRaisedBot extends Bot {
 
         RestTemplate restTemplate = new RestTemplate();
         RichMessage richMessage = new RichMessage("Hand raised!");
+        richMessage.setChannel("testingchannel");
         // set attachments
         Attachment[] attachments = new Attachment[1];
         attachments[0] = new Attachment();
