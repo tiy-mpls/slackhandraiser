@@ -38,21 +38,32 @@ public class HandRaisedBot extends Bot {
     @Controller(events = {EventType.DIRECT_MESSAGE})
     public void onReceiveDM(WebSocketSession session, Event event) throws JsonProcessingException {
 
-        System.out.println("onRecievedDM: " + event.getType() + ":" + event.getUserId() + " : "  + event.getText());
-        System.out.println("onReceivedDM:" + slackService.getCurrentUser().getId());
+//        System.out.println("onRecievedDM: " + event.getType() + ":" + event.getUserId() + " : "  + event.getText());
+//        System.out.println("onReceivedDM:" + slackService.getCurrentUser().getId());
+
+        if(event.getUser() != null) {
+            System.out.println("oneRecievedDM: " + event.getUser().getName());
+            if(event.getUser().getProfile() != null) {
+                System.out.println("onRecievedDM: " + event.getUser().getProfile().getEmail());
+            }
+        }
 
         if(!event.getUserId().equals(slackService.getCurrentUser().getId())) {
-            reply(session, event, new Message("Great question, posting it to chat!"));
+            if(event.getText().endsWith("?")) {
+                reply(session, event, new Message("Great question, posting it to chat!"));
 
-            RestTemplate restTemplate = new RestTemplate();
-            RichMessage richMessage = new RichMessage("Hand raised!");
-            // set attachments
-            Attachment[] attachments = new Attachment[1];
-            attachments[0] = new Attachment();
-            attachments[0].setText(event.getText());
-            richMessage.setAttachments(attachments);
+                RestTemplate restTemplate = new RestTemplate();
+                RichMessage richMessage = new RichMessage("Hand raised!");
+                // set attachments
+                Attachment[] attachments = new Attachment[1];
+                attachments[0] = new Attachment();
+                attachments[0].setText(event.getText());
+                richMessage.setAttachments(attachments);
 
-            restTemplate.postForEntity(slackIncomingWebhookUrl, richMessage.encodedMessage(), String.class);
+                restTemplate.postForEntity(slackIncomingWebhookUrl, richMessage.encodedMessage(), String.class);
+            } else {
+                reply(session, event, new Message("That doesn't look like a question, questions end in a question mark."));
+            }
         }
     }
 }
