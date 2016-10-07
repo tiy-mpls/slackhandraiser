@@ -6,11 +6,13 @@ import me.ramswaroop.jbot.core.slack.EventType;
 import me.ramswaroop.jbot.core.slack.models.Event;
 import me.ramswaroop.jbot.core.slack.models.Message;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.stereotype.Component;
 import org.springframework.web.socket.WebSocketSession;
 
 /**
  * Created by kdrudy on 10/7/16.
  */
+@Component
 public class HandRaisedBot extends Bot {
 
     @Value("${slackBotToken}")
