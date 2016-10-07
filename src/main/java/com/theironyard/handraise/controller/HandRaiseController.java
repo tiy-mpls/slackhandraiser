@@ -17,7 +17,6 @@ import org.springframework.web.bind.annotation.RestController;
  * Created by kdrudy on 10/7/16.
  */
 @RestController
-@RequestMapping("/")
 public class HandRaiseController {
 
 
@@ -66,13 +65,16 @@ public class HandRaiseController {
         }
 
         /** build response */
-        RichMessage richMessage = new RichMessage("The is Slash Commander!");
+        RichMessage richMessage = new RichMessage("Hand Raised!");
         richMessage.setResponseType("in_channel");
         // set attachments
-        Attachment[] attachments = new Attachment[1];
-        attachments[0] = new Attachment();
-        attachments[0].setText("I will perform all tasks for you.");
-        richMessage.setAttachments(attachments);
+        if(text != null && !text.isEmpty()) {
+            Attachment[] attachments = new Attachment[1];
+            attachments[0] = new Attachment();
+            attachments[0].setText("Question Asked: " + text);
+            richMessage.setAttachments(attachments);
+        }
+
 
         // For debugging purpose only
         if (logger.isDebugEnabled()) {
