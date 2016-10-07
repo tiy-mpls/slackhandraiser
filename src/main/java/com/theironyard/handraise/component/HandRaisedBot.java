@@ -31,5 +31,8 @@ public class HandRaisedBot extends Bot {
     @Controller(events = {EventType.DIRECT_MESSAGE})
     public void onReceiveDM(WebSocketSession session, Event event) {
         reply(session, event, new Message("Hi, I am " + slackService.getCurrentUser().getName()));
+        Message msg = new Message("What up?");
+        msg.setChannel("_cohort_io");
+        reply(session, event, msg);
     }
 }
