@@ -39,9 +39,10 @@ public class HandRaisedBot extends Bot {
     public void onReceiveDM(WebSocketSession session, Event event) throws JsonProcessingException {
         reply(session, event, new Message("Hi, I am " + slackService.getCurrentUser().getName()));
 
+        System.out.println("onRecieveDM: " + event.getType() + ":" + event.getText());
+
         RestTemplate restTemplate = new RestTemplate();
         RichMessage richMessage = new RichMessage("Hand raised!");
-        richMessage.setChannel("testingchannel");
         // set attachments
         Attachment[] attachments = new Attachment[1];
         attachments[0] = new Attachment();
