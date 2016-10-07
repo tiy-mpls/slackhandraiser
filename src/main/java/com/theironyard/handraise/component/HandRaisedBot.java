@@ -39,19 +39,20 @@ public class HandRaisedBot extends Bot {
     public void onReceiveDM(WebSocketSession session, Event event) throws JsonProcessingException {
 
         System.out.println("onRecievedDM: " + event.getType() + ":" + event.getUserId() + " : "  + event.getText());
-
         System.out.println("onReceivedDM:" + slackService.getCurrentUser().getId());
 
-        reply(session, event, new Message("Hi, I am " + slackService.getCurrentUser().getName()));
+        if(!event.getUserId().equals(slackService.getCurrentUser().getId())) {
+            reply(session, event, new Message("Great question, posting it to chat!"));
 
-        RestTemplate restTemplate = new RestTemplate();
-        RichMessage richMessage = new RichMessage("Hand raised!");
-        // set attachments
-        Attachment[] attachments = new Attachment[1];
-        attachments[0] = new Attachment();
-        attachments[0].setText("Some data");
-        richMessage.setAttachments(attachments);
+            RestTemplate restTemplate = new RestTemplate();
+            RichMessage richMessage = new RichMessage("Hand raised!");
+            // set attachments
+            Attachment[] attachments = new Attachment[1];
+            attachments[0] = new Attachment();
+            attachments[0].setText(event.getText());
+            richMessage.setAttachments(attachments);
 
-        restTemplate.postForEntity(slackIncomingWebhookUrl, richMessage.encodedMessage(), String.class);
+            restTemplate.postForEntity(slackIncomingWebhookUrl, richMessage.encodedMessage(), String.class);
+        }
     }
 }
