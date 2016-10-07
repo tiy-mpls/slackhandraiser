@@ -38,7 +38,9 @@ public class HandRaisedBot extends Bot {
     @Controller(events = {EventType.DIRECT_MESSAGE})
     public void onReceiveDM(WebSocketSession session, Event event) throws JsonProcessingException {
 
-        System.out.println("onRecieveDM: " + event.getType() + ":" + event.getUserId() + " : "  + event.getText());
+        System.out.println("onRecievedDM: " + event.getType() + ":" + event.getUserId() + " : "  + event.getText());
+
+        System.out.println("onReceivedDM:" + slackService.getCurrentUser().getId());
 
         reply(session, event, new Message("Hi, I am " + slackService.getCurrentUser().getName()));
 
