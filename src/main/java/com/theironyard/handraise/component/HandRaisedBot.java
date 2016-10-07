@@ -32,7 +32,7 @@ public class HandRaisedBot extends Bot {
     public void onReceiveDM(WebSocketSession session, Event event) {
         reply(session, event, new Message("Hi, I am " + slackService.getCurrentUser().getName()));
         Message msg = new Message("What up?");
-        msg.setChannel("_cohort_io");
+        msg.setChannel("#_cohort_io");
         reply(session, event, msg);
     }
 }
