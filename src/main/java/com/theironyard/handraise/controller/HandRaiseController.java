@@ -16,7 +16,7 @@ import org.springframework.web.bind.annotation.RestController;
 /**
  * Created by kdrudy on 10/7/16.
  */
-@RestController
+//@RestController
 public class HandRaiseController {
 
 
