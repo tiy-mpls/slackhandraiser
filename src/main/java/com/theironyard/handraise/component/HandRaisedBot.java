@@ -59,7 +59,7 @@ public class HandRaisedBot extends Bot {
     @Controller(events = {EventType.DIRECT_MESSAGE})
     public void onReceiveDM(WebSocketSession session, Event event) throws IOException {
 
-        String userName = getUserName(event);
+        String userName = getUserName(event.getUserId());
 
         System.out.printf("onReceivedDM: userId : %s : userName : %s\n", event.getUserId(), userName);
 
@@ -98,8 +98,8 @@ public class HandRaisedBot extends Bot {
         }
     }
 
-    private String getUserName(Event event) throws IOException {
-        URL userInfoUrl = new URL(String.format("https://slack.com/api/auth.test?token=%s&%s", webAPIToken, event.getUserId()));
+    private String getUserName(String userId) throws IOException {
+        URL userInfoUrl = new URL(String.format("https://slack.com/api/auth.test?token=%s&%s", webAPIToken, userId));
         URLConnection uc = userInfoUrl.openConnection();
         BufferedReader in = new BufferedReader(new InputStreamReader(uc.getInputStream()));
         String inputLine = in.readLine();
