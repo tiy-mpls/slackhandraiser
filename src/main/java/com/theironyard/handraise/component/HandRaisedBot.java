@@ -6,7 +6,6 @@ import me.ramswaroop.jbot.core.slack.EventType;
 import me.ramswaroop.jbot.core.slack.models.*;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.json.BasicJsonParser;
-import org.springframework.boot.json.JsonJsonParser;
 import org.springframework.boot.json.JsonParser;
 import org.springframework.stereotype.Component;
 import org.springframework.web.client.RestTemplate;
@@ -15,7 +14,6 @@ import org.springframework.web.socket.WebSocketSession;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
-import java.net.MalformedURLException;
 import java.net.URL;
 import java.net.URLConnection;
 import java.util.List;
@@ -36,15 +34,36 @@ public class HandRaisedBot extends Bot {
     @Value("${slackWebAPIToken}")
     private String webAPIToken;
 
+    //Testing Values
+    @Value("${test.channel}")
+    private String testChannel;
+
+    @Value("${test.instructor}")
+    private String testInstructor;
+
+    @Value("#{'${test.students}'.split(',')}")
+    private List<String> testStudents;
+
+
+    //Back End Values
     @Value("${bee.channel}")
     private String beeChannel;
 
     @Value("${bee.instructor}")
     private String beeInstructor;
-    private String beeInstructorId;
 
     @Value("#{'${bee.students}'.split(',')}")
     private List<String> beeStudents;
+
+    //Front End Values
+    @Value("${fee.channel}")
+    private String feeChannel;
+
+    @Value("${fee.instructor}")
+    private String feeInstructor;
+
+    @Value("#{'${fee.students}'.split(',')}")
+    private List<String> feeStudents;
 
     @Override
     public String getSlackToken() {
@@ -72,6 +91,12 @@ public class HandRaisedBot extends Bot {
                 if(beeStudents.contains(userName)) {
                     instructor = beeInstructor;
                     classChannel = beeChannel;
+                } else if(feeStudents.contains(userName)) {
+                    instructor = feeInstructor;
+                    classChannel = feeChannel;
+                } else if(testStudents.contains(userName)) {
+                    instructor = testInstructor;
+                    classChannel = testChannel;
                 }
 
                 if(instructor.isEmpty() && classChannel.isEmpty()) {
@@ -86,7 +111,7 @@ public class HandRaisedBot extends Bot {
                     // set attachments
                     Attachment[] attachments = new Attachment[1];
                     attachments[0] = new Attachment();
-                    attachments[0].setText("<@" + instructor + ">: " + event.getText());
+                    attachments[0].setText("<@" + instructor + "> " + event.getText());
                     richMessage.setAttachments(attachments);
 
                     RestTemplate restTemplate = new RestTemplate();
@@ -98,7 +123,7 @@ public class HandRaisedBot extends Bot {
         }
     }
 
-    private String getUserName(String userId) throws IOException {
+    public String getUserName(String userId) throws IOException {
         URL userInfoUrl = new URL(String.format("https://slack.com/api/auth.test?token=%s&%s", webAPIToken, userId));
         URLConnection uc = userInfoUrl.openConnection();
         BufferedReader in = new BufferedReader(new InputStreamReader(uc.getInputStream()));
