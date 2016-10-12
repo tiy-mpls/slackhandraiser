@@ -6,7 +6,8 @@ Bot that will accept questions directly messaged to it and route them to the app
 Classes are set up in application.properties with the channel, instructor and a list of students.
 
 ```
-bee.channel=testingchannel
-bee.instructor=kyle.rudy
-bee.students=kyle.rudy,jim.instructor
+`# Testing Information
+test.channel=testingchannel
+test.instructor=kyle.rudy
+test.students=kyle.rudy,jim.instructor
 ```

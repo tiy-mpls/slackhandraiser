@@ -83,42 +83,59 @@ public class HandRaisedBot extends Bot {
         System.out.printf("onReceivedDM: userId : %s : userName : %s\n", event.getUserId(), userName);
 
         if(!event.getUserId().equals(slackService.getCurrentUser().getId())) {
-            if(event.getText().endsWith("?")) {
 
-                String instructor = "";
-                String classChannel = "";
+            String instructor = "";
+            String classChannel = "";
 
-                if(beeStudents.contains(userName)) {
-                    instructor = beeInstructor;
-                    classChannel = beeChannel;
-                } else if(feeStudents.contains(userName)) {
-                    instructor = feeInstructor;
-                    classChannel = feeChannel;
-                } else if(testStudents.contains(userName)) {
-                    instructor = testInstructor;
-                    classChannel = testChannel;
-                }
+            if(beeStudents.contains(userName)) {
+                instructor = beeInstructor;
+                classChannel = beeChannel;
+            } else if(feeStudents.contains(userName)) {
+                instructor = feeInstructor;
+                classChannel = feeChannel;
+            } else if(testStudents.contains(userName)) {
+                instructor = testInstructor;
+                classChannel = testChannel;
+            }
 
-                if(instructor.isEmpty() && classChannel.isEmpty()) {
-                    reply(session, event, new Message("Please inform your instructor that I don't know who you are so that they can fix me."));
-                } else {
-                    reply(session, event, new Message("Great question, posting it to chat!"));
 
-                    RichMessage richMessage = new RichMessage();
-                    richMessage.setText("Hand raised!");
-                    richMessage.setChannel(classChannel);
+            if(instructor.isEmpty() && classChannel.isEmpty()) {
+                reply(session, event, new Message("Please inform your instructor that I don't know who you are so that they can fix me."));
+            } else if(event.getText().equalsIgnoreCase("raise") || event.getText().equalsIgnoreCase("raise hand")) {
+                reply(session, event, new Message("Raising your hand in " + classChannel + "."));
 
-                    // set attachments
-                    Attachment[] attachments = new Attachment[1];
-                    attachments[0] = new Attachment();
-                    attachments[0].setText("<@" + instructor + "> " + event.getText());
-                    richMessage.setAttachments(attachments);
+                RichMessage richMessage = new RichMessage();
+                richMessage.setText("Hand raised!");
+                richMessage.setChannel(classChannel);
 
-                    RestTemplate restTemplate = new RestTemplate();
-                    restTemplate.postForEntity(slackIncomingWebhookUrl, richMessage.encodedMessage(), String.class);
-                }
+                // set attachments
+                Attachment[] attachments = new Attachment[1];
+                attachments[0] = new Attachment();
+                attachments[0].setText("<@" + instructor + "> raised hand from <@" + userName + ">.");
+                richMessage.setAttachments(attachments);
+
+                RestTemplate restTemplate = new RestTemplate();
+                restTemplate.postForEntity(slackIncomingWebhookUrl, richMessage.encodedMessage(), String.class);
+
+
+            } else if(event.getText().endsWith("?")) {
+                reply(session, event, new Message("Great question, posting it to chat!"));
+
+                RichMessage richMessage = new RichMessage();
+                richMessage.setText("Hand raised!");
+                richMessage.setChannel(classChannel);
+
+                // set attachments
+                Attachment[] attachments = new Attachment[1];
+                attachments[0] = new Attachment();
+                attachments[0].setText("<@" + instructor + "> " + event.getText());
+                richMessage.setAttachments(attachments);
+
+                RestTemplate restTemplate = new RestTemplate();
+                restTemplate.postForEntity(slackIncomingWebhookUrl, richMessage.encodedMessage(), String.class);
+
             } else {
-                reply(session, event, new Message("That doesn't look like a question, questions end in a question mark."));
+                reply(session, event, new Message("I don't know what you mean.  Type 'Raise' to raise your hand or a question to ask a question to the class channel."));
             }
         }
     }

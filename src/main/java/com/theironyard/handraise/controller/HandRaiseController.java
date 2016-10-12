@@ -16,7 +16,7 @@ import org.springframework.web.bind.annotation.RestController;
 /**
  * Created by kdrudy on 10/7/16.
  */
-//@RestController
+@RestController
 public class HandRaiseController {
 
 
@@ -28,6 +28,22 @@ public class HandRaiseController {
      */
     @Value("${slashCommandToken}")
     private String slackToken;
+
+    @Value("${test.channel}")
+    private String testChannel;
+    @Value("${test.instructor}")
+    private String testInstructor;
+
+    @Value("${bee.channel}")
+    private String beeChannel;
+    @Value("${bee.instructor}")
+    private String beeInstructor;
+
+    @Value("${fee.channel}")
+    private String feeChannel;
+    @Value("${fee.instructor}")
+    private String feeInstructor;
+
 
     /**
      * Slash Command handler. When a user types for example "/app help"
@@ -64,6 +80,15 @@ public class HandRaiseController {
             return new RichMessage("Sorry! You're not lucky enough to use our slack command.");
         }
 
+        String instructor = null;
+        if(channelName.equals(testChannel)) {
+            instructor = testInstructor;
+        } else if(channelName.equals(beeChannel)) {
+            instructor = beeInstructor;
+        } else if(channelName.equals(feeChannel)) {
+            instructor = feeInstructor;
+        }
+
         /** build response */
         RichMessage richMessage = new RichMessage("Hand Raised!");
         richMessage.setResponseType("in_channel");
@@ -71,7 +96,11 @@ public class HandRaiseController {
         if(text != null && !text.isEmpty()) {
             Attachment[] attachments = new Attachment[1];
             attachments[0] = new Attachment();
-            attachments[0].setText("Question Asked: " + text);
+            if(instructor != null) {
+                attachments[0].setText("<@" + instructor + "> hand raised by <@" + userName + ">");
+            } else {
+                attachments[0].setText("Hand raised by <@" + userName + ">");
+            }
             richMessage.setAttachments(attachments);
         }
 
