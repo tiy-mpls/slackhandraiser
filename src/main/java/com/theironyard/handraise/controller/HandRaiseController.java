@@ -93,17 +93,14 @@ public class HandRaiseController {
         RichMessage richMessage = new RichMessage("Hand Raised!");
         richMessage.setResponseType("in_channel");
         // set attachments
-        if(text != null && !text.isEmpty()) {
-            Attachment[] attachments = new Attachment[1];
-            attachments[0] = new Attachment();
-            if(instructor != null) {
-                attachments[0].setText("<@" + instructor + "> hand raised by <@" + userName + ">");
-            } else {
-                attachments[0].setText("Hand raised by <@" + userName + ">");
-            }
-            richMessage.setAttachments(attachments);
+        Attachment[] attachments = new Attachment[1];
+        attachments[0] = new Attachment();
+        if(instructor != null) {
+            attachments[0].setText("<@" + instructor + "> hand raised by <@" + userName + ">");
+        } else {
+            attachments[0].setText("Hand raised by <@" + userName + ">");
         }
-
+        richMessage.setAttachments(attachments);
 
         // For debugging purpose only
         if (logger.isDebugEnabled()) {
