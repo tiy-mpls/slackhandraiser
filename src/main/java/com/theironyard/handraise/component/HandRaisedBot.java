@@ -101,7 +101,7 @@ public class HandRaisedBot extends Bot {
 
             if(instructor.isEmpty() && classChannel.isEmpty()) {
                 reply(session, event, new Message("Please inform your instructor that I don't know who you are so that they can fix me."));
-            } else if(event.getText().equalsIgnoreCase("raise") || event.getText().equalsIgnoreCase("raise hand") || event.getText().equalsIgnoreCase("/raisehand")) {
+            } else if(event.getText().equalsIgnoreCase("raise") || event.getText().equalsIgnoreCase("raise hand")) {
                 reply(session, event, new Message("Raising your hand in " + classChannel + "."));
 
                 RichMessage richMessage = new RichMessage();
