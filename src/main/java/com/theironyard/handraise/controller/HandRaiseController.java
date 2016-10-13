@@ -80,12 +80,10 @@ public class HandRaiseController {
             return new RichMessage("Sorry! You're not lucky enough to use our slack command.");
         }
 
-        System.out.println("RAISEHAND: channelName:" + channelName);
-        System.out.println("RAISEHAND: instructors: " + testInstructor + "," + beeInstructor + "," + feeInstructor);
-        System.out.println("RAISEHAND: channels: " + testChannel + "," + beeChannel + "," + feeChannel);
+//        System.out.println("RAISEHAND: channelName:" + channelName);
 
         String instructor = null;
-        if(channelName.equalsIgnoreCase(testChannel)) {
+        if(channelName.equalsIgnoreCase(testChannel) || "privategroup".equalsIgnoreCase(channelName)) {
             instructor = testInstructor;
         } else if(channelName.equalsIgnoreCase(beeChannel)) {
             instructor = beeInstructor;
