@@ -1,5 +1,6 @@
 package com.theironyard.handraise.component;
 
+import com.theironyard.handraise.SlackHandRaiseApplication;
 import me.ramswaroop.jbot.core.slack.Bot;
 import me.ramswaroop.jbot.core.slack.Controller;
 import me.ramswaroop.jbot.core.slack.EventType;
@@ -134,6 +135,8 @@ public class HandRaisedBot extends Bot {
                 RestTemplate restTemplate = new RestTemplate();
                 restTemplate.postForEntity(slackIncomingWebhookUrl, richMessage.encodedMessage(), String.class);
 
+            } else if(event.getText().equalsIgnoreCase("about")) {
+                reply(session, event, new Message(String.format("HandRaiseBot v%s written by Kyle David Rudy for The Iron Yard Twin Cities", SlackHandRaiseApplication.VERSION)));
             } else {
                 reply(session, event, new Message("I don't know what you mean.  Type 'Raise' to raise your hand or a question to ask a question to your class channel."));
             }
