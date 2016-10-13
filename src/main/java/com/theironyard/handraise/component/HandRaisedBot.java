@@ -101,7 +101,7 @@ public class HandRaisedBot extends Bot {
 
             if(instructor.isEmpty() && classChannel.isEmpty()) {
                 reply(session, event, new Message("Please inform your instructor that I don't know who you are so that they can fix me."));
-            } else if(event.getText().equalsIgnoreCase("raise") || event.getText().equalsIgnoreCase("raise hand")) {
+            } else if(event.getText().equalsIgnoreCase("raise") || event.getText().equalsIgnoreCase("raise hand") || event.getText().equalsIgnoreCase("/raisehand")) {
                 reply(session, event, new Message("Raising your hand in " + classChannel + "."));
 
                 RichMessage richMessage = new RichMessage();
@@ -135,7 +135,7 @@ public class HandRaisedBot extends Bot {
                 restTemplate.postForEntity(slackIncomingWebhookUrl, richMessage.encodedMessage(), String.class);
 
             } else {
-                reply(session, event, new Message("I don't know what you mean.  Type 'Raise' to raise your hand or a question to ask a question to the class channel."));
+                reply(session, event, new Message("I don't know what you mean.  Type 'Raise' to raise your hand or a question to ask a question to your class channel."));
             }
         }
     }

@@ -80,6 +80,8 @@ public class HandRaiseController {
             return new RichMessage("Sorry! You're not lucky enough to use our slack command.");
         }
 
+        System.out.println("RAISHAND: channelName:" + channelName);
+
         String instructor = null;
         if(channelName.equals(testChannel)) {
             instructor = testInstructor;
