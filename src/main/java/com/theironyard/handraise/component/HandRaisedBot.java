@@ -143,7 +143,7 @@ public class HandRaisedBot extends Bot {
         }
     }
 
-    public String getUserName(String userId) throws IOException {
+    private String getUserName(String userId) throws IOException {
         URL userInfoUrl = new URL(String.format("https://slack.com/api/auth.test?token=%s&%s", webAPIToken, userId));
         URLConnection uc = userInfoUrl.openConnection();
         BufferedReader in = new BufferedReader(new InputStreamReader(uc.getInputStream()));
@@ -158,7 +158,7 @@ public class HandRaisedBot extends Bot {
 //            System.out.println(info + " : " + userInfo.get(info));
 //        }
 
-        String userName = null;
+        String userName = "";
         if(userInfo.get("ok").equals("true")) {
             userName = (String) userInfo.get("user");
         }

@@ -13,6 +13,8 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.util.Optional;
+
 /**
  * Created by kdrudy on 10/7/16.
  */
@@ -82,24 +84,24 @@ public class HandRaiseController {
 
 //        System.out.println("RAISEHAND: channelName:" + channelName);
 
-        String instructor = null;
+        Optional<String> instructor = Optional.empty();
         if(channelName.equalsIgnoreCase(testChannel) || "privategroup".equalsIgnoreCase(channelName)) {
-            instructor = testInstructor;
+            instructor = Optional.ofNullable(testInstructor);
         } else if(channelName.equalsIgnoreCase(beeChannel)) {
-            instructor = beeInstructor;
+            instructor = Optional.ofNullable(beeInstructor);
         } else if(channelName.equalsIgnoreCase(feeChannel)) {
-            instructor = feeInstructor;
+            instructor = Optional.ofNullable(feeInstructor);
         }
 
         if(!"directmessage".equals(channelName)) {
-            /** build response */
+            /* build response */
             RichMessage richMessage = new RichMessage("Hand Raised!");
             richMessage.setResponseType("in_channel");
             // set attachments
             Attachment[] attachments = new Attachment[1];
             attachments[0] = new Attachment();
-            if (instructor != null) {
-                attachments[0].setText("<@" + instructor + "> hand raised by <@" + userName + ">");
+            if (instructor.isPresent()) {
+                attachments[0].setText("<@" + instructor.get() + "> hand raised by <@" + userName + ">");
             } else {
                 attachments[0].setText("Hand raised by <@" + userName + ">");
             }
